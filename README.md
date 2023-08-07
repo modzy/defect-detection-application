@@ -28,7 +28,6 @@ This repository includes an example implementation of a defect detection app tha
 
 *NOTE: This app was originally built to run on an NVIDIA Jetson Nano device, so some of the code may use device-specific developer packages, but this framework can be modified for other device and architecture types.*
 
-<br>
 
 ## Getting Started
 
