@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Defect Detection</title>
+  <link rel="stylesheet" , href="static/css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="header">
+    <img class="logo" src="static/img/modzy_badge_v4_rev.png">
+    <h1>Spur Gear Line</h1>
+    <div class="tag bg-good">
+      <img class="icon" src="static/img/on-off-button.png">
+      <p class="descriptor">Online</p>
+    </div>
+  </div>
+  <div class="sidebar">
+    <img class="icon" src="static/img/dashboard.png" id="dashboard">
+    <img class="icon" src="static/img/devices.png" id="devices">
+    <img class="icon" src="static/img/settings.png" id="settings">
+  </div>
+  <div class="row">
+    <div class="column left">
+      <figure>
+        <img src="{{ url_for('stream_frames') }}" width="100%">
+      </figure>
+      <div class="colum left bottom">
+        <figure class="led-status-video">
+          <video controls autoplay width="100%">
+            <source src="http://localhost:8080/stream.mp4" type="video/mp4">
+          </video>
+        </figure>
+        <div class="stats-block">
+          <table>
+            <tr>
+              <td>Model</td>
+              <td>Defect Detection <p class="model-version">v0.0.3</p>
+                <div class="tag code">
+                  <img class="icon" src="static/img/on-off-button.png">
+                  <p class="descriptor">Yolo v5</p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Device</td>
+              <td>NVIDIA® Jetson Nano™ Developer Kit</td>
+            </tr>
+            <tr>
+              <td>OS/Arch</td>
+              <td>linux/arm64</td>
+            </tr>
+            <tr>
+              <td>CPU</td>
+              <td>Quad-core ARM A57 @ 1.43 GHz</td>
+            </tr>
+            <tr>
+              <td>Memory</td>
+              <td>4 GB 64-bit LPDDR4 25.6 GB/s</td>
+            </tr>
+            <tr>
+              <td>GPU</td>
+              <td>128-core Maxwell</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="column right">
+      <div id="defectTable"></div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      var table = document.getElementById("defectTable");
+      window.setInterval(() => {
+        $.get(window.location.origin + "/table_data", function (data) {
+          table.innerHTML = data;
+        })
+      }, 1000);
+    });  
+  </script>
+</body>
+
+</html>

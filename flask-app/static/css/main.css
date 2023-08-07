@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Style the header */
+.header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 5px;
+}
+
+/* Left column */
+.column.left {
+    width: 65%;
+}
+
+/* Right column */
+.column.right {
+    width: 30%;
+}
+
+/* Clear floats after the columns */
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+/* @media screen and (max-width: 1000px) {
+    .column.left,
+    .column.right {
+        width: 100%;
+    }
+} */
+
+figure {
+    border: 1px #cccccc solid;
+    padding: 4px;
+    margin: auto;
+  }
+
+figcaption {
+    background-color: white;
+    color: black;
+    font-style: italic;
+    padding: 2px;
+    text-align: center;
+  }
+
+  /* Tables */
+  table.dataframe, .dataframe th, .dataframe td {
+    border: none;
+    border-bottom: 1px solid #C8C8C8;
+    border-collapse: collapse;
+    text-align:center;
+    padding: 10px;
+    margin-bottom: 40px;
+    font-size: 0.9em;
+  }
+/*   
+  .male th {
+      background-color: #add8e6;
+      color: white;
+  }
+  
+  .female th {
+      background-color: #77dd77;
+      color: white;
+  }
+   */
+  tr:nth-child(odd)		{ background-color:#eee; }
+  tr:nth-child(even)	{ background-color:#fff; }
+  
+  tr:hover            { background-color: #ffff99;}
+  

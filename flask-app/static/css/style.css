@@ -1,0 +1,269 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background: #0F2027;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* Style the header */
+.header {
+    background-color: #203A43;
+    color: #fff;
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+h1 {
+    font-size: 1.25em;
+    font-weight: 400;
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.logo {
+    width: 3em;
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
+.tag {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 2em;
+    border-radius: 15px 5px / 30px;
+}
+
+.tag .icon {
+    width: 0.7em;
+    vertical-align: middle;
+    display: inline-block;
+    text-align: left;
+}
+
+.tag p {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: .75em;
+    font-weight: 300;
+    padding: 2px;
+    margin: 0;
+}
+
+.bg-good {
+    background: #4CB8C4;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #3CD3AD, #4CB8C4);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #3CD3AD, #4CB8C4);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.tag.code {
+    background: #D38312;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #A83279, #D38312);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #A83279, #D38312);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0.5em;
+    vertical-align: middle;
+}
+
+h2 {
+    color: #fff;
+}
+
+.sidebar {
+    width: 9em;
+    height: 312px;
+    padding-top: 9em;
+    padding-bottom: 9em;
+    position: fixed;
+    z-index: 1;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar .icon {
+    padding: 1em;
+    width: 70px;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.row {
+    margin-left: 9em;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 5px;
+}
+
+/* Left column */
+.column.left {
+    width: 60%;
+}
+
+/* Right column */
+.column.right {
+    width: 35%;
+}
+
+/* Clear floats after the columns */
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+/* @media screen and (max-width: 1000px) {
+    .column.left,
+    .column.right {
+        width: 100%;
+    }
+} */
+
+figure {
+    padding: 4px;
+    margin: auto;
+}
+
+.bottom {
+    padding: 4px;
+    margin: auto;
+}
+
+figure.led-status-video {
+    width: 50%;
+    float: left;
+    padding-left: 0;
+    padding-top: 5px;
+    padding-right: 10px;
+}
+
+.stats-block {
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 42%;
+    text-align: left;
+    color: #fff;
+    display: inline-block;
+    font-size: 0.8em;
+}
+
+.stats-block table {
+    width: 100%;
+}
+
+.stats-block tr {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.stats-block td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+p.model-version {
+    display: inline-block;
+    padding-left: 0.5em;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    font-weight: 500;
+}
+
+figcaption {
+    background-color: white;
+    color: black;
+    font-style: italic;
+    padding: 2px;
+    text-align: center;
+}
+
+/* Tables */
+table.dataframe,
+.dataframe th,
+.dataframe td {
+    border: none;
+/*    border-bottom: 1px solid #C8C8C8;*/
+    border-collapse: collapse;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 40px;
+    font-size: 0.9em;
+    color: #fff;
+}
+
+table.dataframe {
+    width: 100%;
+}
+
+#defectTable{
+    padding: 4px;
+}
+
+/*   
+  .male th {
+      background-color: #add8e6;
+      color: white;
+  }
+  
+  .female th {
+      background-color: #77dd77;
+      color: white;
+  }
+   */
+tr:nth-child(odd) {
+    background-color: transparent;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255,255,255,0.1);
+}
+
+tr:hover {
+    background-color: #9FD2D1;
+}
