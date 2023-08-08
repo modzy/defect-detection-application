@@ -49,30 +49,30 @@ This section outlines the set of prerequisites you will need before running and 
 With these prerequisites met, we can prepare our environment. First, clone this repository into your environment and navigate to the directory with the Flask app code:
 
 ```bash
-git clone https://github.com/modzy/defect-detection-application.git
-cd defect-detection-application/flask-app/
+$ git clone https://github.com/modzy/defect-detection-application.git
+$ cd defect-detection-application/flask-app/
 ```
 
 Next, create a virtual environment (virtualenv, venv, conda all work) and activate it.
 
 ```bash
-python3 -m venv .env
+$ python3 -m venv .env
 ```
 
 _Linux or Mac OS_
 ```bash
-source .env/bin/activate
+$ source .env/bin/activate
 ```
 
 _Windows_
 ```cmd
-.\.env\Scripts\activate
+$ .\.env\Scripts\activate
 ```
 
 Now, install the packages needed to run the Flask app:
 
 ```bash
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 With these Python packages installed, your environment should be set up and ready to run the Flask app. 
@@ -84,10 +84,10 @@ With these Python packages installed, your environment should be set up and read
 As listed in the [Getting Started](./README.md#getting-started) section, you'll need to have an instance of Modzy core installed on your device that will capture a video stream and feed it through your model(s) for predictions. Assuming that you've installed Modzy Core and have waited for all model containers to download, you can run Modzy core in server mode by running the following command:
 
 ```bash
-./modzy-core server --resume
+$ ./modzy-core server --resume
 ```
 
-Note: Modzy Core needs to run in it's own terminal, so you'll need to open a second terminal on the same device to run the corresponding flask app the uses Modzy Core for inference.
+*NOTE: Modzy Core needs to run in it's own terminal, so you'll need to open a second terminal on the same device to run the corresponding flask app the uses Modzy Core for inference.*
 
 For more detailed Modzy Core installation instructions, please see our [documentation](https://docs.modzy.com/docs/edge).
  
@@ -102,7 +102,7 @@ Next, edit the [edge client instantiation](./flask-app/app.py#L117) based on the
 Finally, you can run the Flask app code:
 
 ```bash
-python3 app.py
+$ python3 app.py
 ```
 
 If successful, you should see the following log lines in your terminal:
