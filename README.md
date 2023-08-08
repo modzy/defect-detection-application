@@ -28,6 +28,13 @@ This repository includes an example implementation of a defect detection app tha
 
 *NOTE: This app was originally built to run on an NVIDIA Jetson Nano device, so some of the code may use device-specific developer packages, but this framework can be modified for other device and architecture types.*
 
+## Technologies Used
+Below is a list of the key technologies used to create this application. These technologies can be swapped out as needed, but doing so will require additional customization.
+
+* Web app framework: [flask](https://github.com/pallets/flask)
+* Video streaming: [gstreamer](https://github.com/GStreamer/gstreamer)
+* Video stream processing: [opencv](https://github.com/opencv/opencv)
+* Computer vision inference: [Modzy Edge](https://docs.modzy.com/docs/edge)
 
 ## Getting Started
 
@@ -49,17 +56,17 @@ cd defect-detection-application/flask-app/
 Next, create a virtual environment (virtualenv, venv, conda all work) and activate it.
 
 ```bash
-python3 -m venv venv
+python3 -m venv .env
 ```
 
 _Linux or Mac OS_
 ```bash
-source venv/bin/activate
+source .env/bin/activate
 ```
 
 _Windows_
 ```cmd
-.\venv\Scripts\activate
+.\.env\Scripts\activate
 ```
 
 Now, install the packages needed to run the Flask app:
@@ -74,13 +81,15 @@ With these Python packages installed, your environment should be set up and read
 
 ### Running Modzy Core
 
-As listed in the [Getting Started](./README.md#getting-started) section, it is expected that you have an instance of Modzy core installed on a device that will capture a video stream and feed it through your model(s) for predictions. It is also expected that the model container(s) are downloaded to your device for processing. Assuming these conditions are met, you can run Modzy core in server mode:
+As listed in the [Getting Started](./README.md#getting-started) section, you'll need to have an instance of Modzy core installed on your device that will capture a video stream and feed it through your model(s) for predictions. Assuming that you've installed Modzy Core and have waited for all model containers to download, you can run Modzy core in server mode by running the following command:
 
 ```bash
 ./modzy-core server --resume
 ```
 
-For more detailed instructions, please visit the Modzy Core CLI [documentation](https://docs.modzy.com/docs/modzy-core-cli).
+Note: Modzy Core needs to run in it's own terminal, so you'll need to open a second terminal on the same device to run the corresponding flask app the uses Modzy Core for inference.
+
+For more detailed Modzy Core installation instructions, please see our [documentation](https://docs.modzy.com/docs/edge).
  
 ### Running Flask App
 
@@ -108,3 +117,7 @@ If successful, you should see the following log lines in your terminal:
    WARNING: This is a development server. Do not use it in a production deployment.
  * Running on http://<device-IP-address>:8000/ (Press CTRL+C to quit)
 ```
+### Customization
+To customize this template for your own purposes, here are some helpful tips:
+ * Changes to the UI can be made in [flask-app/templates/app.html](.flask-app/templates/app.html) and [flask-app/static/css/style.css](.flask-app/static/css/style.css).
+ * Changes to the video stream processing and AI inference processing can be made in [flask-app/app.py](.flask-app/app.py). The `app.py` script also includes comments with the word "EDITABLE" to highly sections of the codebase will likely need to change if using a different streaming protocol besides gstreamer, or for using this template with a different computer vision model. 

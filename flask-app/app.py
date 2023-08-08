@@ -6,13 +6,14 @@ import datetime
 import threading
 from util import colors
 import pandas as pd
-import Jetson.GPIO as GPIO
 from modzy import EdgeClient
 from modzy.edge import InputSource
 from flask import Response, Flask, render_template
-import Jetson.GPIO as GPIO
 
-# Define constant variables to be used in workflow
+'''
+EDITABLE: These constants primarly define gstreamer settings for the live
+video feed that will be processed through a model.
+'''
 CAPTURE_WIDTH=1920
 CAPTURE_HEIGHT=1080
 DISPLAY_WIDTH=960
@@ -24,43 +25,11 @@ STREAM = False
 SAVE_VID = True
 MODEL_ID = "<model-identifier>"
 MODEL_VERSION = "<model-version>"
-NAMES = [] # e.g., ['broken_teeth', 'dent', 'scratch']
+NAMES = [] # For class names (e.g., ['broken_teeth', 'dent', 'scratch'])
 NUM_FRAMES = 90
 lw = 2
 tf = max(lw - 1, 1)
 txt_color=(255, 255, 255)
-
-# Set up the GPIO pins
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
-
-# Define GPIO pins used to toggle each LED color
-LED_PINS = {"red":29, "green":15, "white":7}
-# Red: "Defect Detected", Green: "Model Running", White: "Core Status"
-channels = [LED_PINS["red"], LED_PINS["green"], LED_PINS["white"]]
-GPIO.setup(channels, GPIO.OUT)
-
-# Define functions for light manipulation
-def turn_on(color):
-    if color not in LED_PINS:
-        raise ValueError("LED color must be one of %r." % LED_PINS)
-    else:
-        GPIO.output(LED_PINS[color], GPIO.HIGH)
-
-def turn_off(color):
-    if color not in LED_PINS:
-        raise ValueError("LED color must be one of %r." % LED_PINS)
-    else:
-        GPIO.output(LED_PINS[color], GPIO.LOW)
-
-def pulse(color, times=1):
-    if color not in LED_PINS:
-        raise ValueError("LED color must be one of %r." % LED_PINS)
-    else:
-        for _ in range(times):
-            GPIO.output(LED_PINS[color], GPIO.HIGH)
-            time.sleep(0.05)
-            GPIO.output(LED_PINS[color], GPIO.LOW)
 
 # Image frame sent to the Flask object
 global video_frame
@@ -70,14 +39,23 @@ video_frame = None
 global thread_lock 
 thread_lock = threading.Lock()
 
-# Tables to show real-time prediction analysis
+'''
+EDITABLE: This defines the realtime table that displays live predictions. Edit
+the "Defect" column to represent the types o classes your model will predict
+(such as "vehicle", "license plate", etc.). This table shows up in app.html.
+'''
 global aggregate_frame_df
-aggregate_frame_df = pd.DataFrame(columns=["Timestamp", "Defect", "Confidence Score"])
+aggregate_frame_df = pd.DataFrame(
+    columns=["Timestamp", "Defect", "Confidence Score"]
+    )
 
 # Create the Flask object for the application
 app = Flask(__name__)
 
-# Define function for connecting to gstreamer video pipeline
+'''
+EDITABLE: Define function for connecting to gstreamer video pipeline. This
+section will need to be rewritten if using a different video streaming tool.
+'''
 def gstreamer_pipeline(
     exposuretime_low = 8000000,
     exposuretime_high = 8000000,
@@ -115,8 +93,6 @@ def capture_frames():
     video_capture = cv2.VideoCapture(gstreamer_pipeline(), cv2.CAP_GSTREAMER)
     start_time = time.time()
     client = EdgeClient("localhost", 55000)
-    pulse("white",3)
-    turn_on("white")
     client.connect()
     while True and video_capture.isOpened():
         try:
@@ -125,12 +101,13 @@ def capture_frames():
                 print("no return key")
                 break
 
-            # Create a copy of the frame and store it in the global variable,
-            # with thread safe access
+            '''
+            Create a copy of the frame and store it in the global variable,
+            with thread safe access
+            '''
             with thread_lock:
-                '''
-                Frame preparation for Modzy
-                '''
+                
+                # Frame preparation for Modzy inference processing
                 _, encoded_img = cv2.imencode('.jpg', frame)
                 input_object = InputSource(
                     key="image",
@@ -138,9 +115,11 @@ def capture_frames():
                 )       
                 
                 '''
-                Modzy APIs
+                EDITABLE: Modzy API calls for running image frames through a
+                model and then pulling out prediction values from the resulting
+                object that is returned. This section may need to change
+                depending on the output structure of the model you use.
                 '''
-                turn_on('green')
                 inference = client.inferences.run(MODEL_ID, MODEL_VERSION, [input_object])
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 if len(inference.result.outputs.keys()):
@@ -148,13 +127,11 @@ def capture_frames():
                     frame_stats = [[timestamp, det['class'], det['score']] for det in results['data']['result']['detections']]
                     frame_df = pd.DataFrame(frame_stats, columns=["Timestamp", "Defect", "Confidence Score"])
                     aggregate_frame_df = pd.concat([frame_df, aggregate_frame_df], ignore_index=True, axis=0)
-                    '''
-                    Postprocessing
-                    '''
+                    
+                    # Postprocessing
                     preds = results['data']['result']['detections']
 
                     if len(preds):
-                        pulse('red', 1)
                         for det in preds:
                             p1, p2 = (det['xmin'], det['ymin']), (det['xmax'], det['ymax'])
                             label = det['class']
@@ -182,17 +159,12 @@ def capture_frames():
             if key == 27:
                 break
         except Exception as e:
-            turn_off("green")
-            turn_off("white")
             print("ERROR:\n{}".format(e.with_traceback()))
             break
     end_time = time.time()
     print(f'Video Stream closed after {end_time - start_time} seconds')
     video_capture.release()
     client.close()
-    turn_off("green")
-    turn_off("red")
-    turn_off("white")
         
 def encode_frame():
     global thread_lock
@@ -227,19 +199,20 @@ def return_table():
 
 @app.route("/stream_frames")
 def stream_frames():
-    return Response(encode_frame(), mimetype = "multipart/x-mixed-replace; boundary=frame")
+    return Response(
+        encode_frame(), mimetype = "multipart/x-mixed-replace; boundary=frame"
+        )
 
-# check to see if this is the main thread of execution
+# Check to see if this is the main thread of execution
 if __name__ == '__main__':
 
-    # Create a thread and attach the method that captures the image frames, to it
+    # Create a thread and attach to it the method that captures the image frames
     process_thread = threading.Thread(target=capture_frames, daemon=True)
     process_thread.start()
-    
-    # create thread for table creation
-    # table_thread = threading.Thread(target=)
 
-    # start the Flask Web Application
-    # While it can be run on any feasible IP, IP = 0.0.0.0 renders the web app on
-    # the host machine's localhost and is discoverable by other machines on the same network 
+    '''
+    Start the Flask Web Application. While it can be run on any feasible IP,
+    IP = 0.0.0.0 renders the web app on the host machine's localhost and is
+    discoverable by other machines on the same network 
+    '''
     app.run(host="0.0.0.0", port="8000")
