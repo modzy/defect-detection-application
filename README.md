@@ -49,17 +49,17 @@ cd defect-detection-application/flask-app/
 Next, create a virtual environment (virtualenv, venv, conda all work) and activate it.
 
 ```bash
-python3 -m venv venv
+python3 -m venv .env
 ```
 
 _Linux or Mac OS_
 ```bash
-source venv/bin/activate
+source .env/bin/activate
 ```
 
 _Windows_
 ```cmd
-.\venv\Scripts\activate
+.\.env\Scripts\activate
 ```
 
 Now, install the packages needed to run the Flask app:
