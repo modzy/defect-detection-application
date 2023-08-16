@@ -205,6 +205,11 @@ def stream_frames():
 
 # Check to see if this is the main thread of execution
 if __name__ == '__main__':
+    
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", default=8000)
+    args = parser.parse_args()
 
     # Create a thread and attach to it the method that captures the image frames
     process_thread = threading.Thread(target=capture_frames, daemon=True)
@@ -215,4 +220,4 @@ if __name__ == '__main__':
     IP = 0.0.0.0 renders the web app on the host machine's localhost and is
     discoverable by other machines on the same network 
     '''
-    app.run(host="0.0.0.0", port="8000")
+    app.run(host="0.0.0.0", port=args.port)
